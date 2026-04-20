@@ -1,0 +1,75 @@
+.form-intro {
+  margin: var(--app-space-2) var(--app-space-1) var(--app-space-3);
+}
+
+.form-intro h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--ion-color-primary);
+}
+
+.form-intro p {
+  margin: var(--app-space-1) 0 0;
+  color: var(--ion-color-medium);
+  font-size: 0.95rem;
+}
+
+.form-item {
+  --border-radius: var(--app-radius-md);
+  --inner-border-width: 0;
+  --border-width: 0;
+  --background: var(--app-surface-bg);
+  --padding-start: var(--app-space-3);
+  --padding-end: var(--app-space-3);
+  margin-bottom: var(--app-space-2);
+  border: 1px solid var(--app-border-color);
+  border-radius: var(--app-radius-md);
+  overflow: hidden;
+  box-shadow: var(--app-shadow-soft);
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--app-space-3);
+  margin-top: var(--app-space-5);
+}
+
+.field-error {
+  display: block;
+  margin: var(--app-space-1) var(--app-space-4) var(--app-space-3);
+  font-size: 0.85rem;
+}
+
+.form-error {
+  display: block;
+  margin: 0 var(--app-space-1) var(--app-space-4);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--app-space-3);
+  margin-top: var(--app-space-4);
+}
+
+.form-actions-right {
+  display: flex;
+  gap: var(--app-space-2);
+  margin-left: auto;
+}
+
+.delete-button {
+  --border-radius: var(--app-radius-sm);
+  font-weight: 600;
+}
+
+.secondary-action,
+.primary-action {
+  --border-radius: var(--app-radius-sm);
+  min-width: 120px;
+  font-weight: 600;
+}

@@ -1,0 +1,106 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Expenses</ion-title>
+    <ion-buttons slot="end">
+      <ion-button
+        routerLink="/expenses/new"
+        fill="clear"
+        color="light"
+        class="new-expense-button"
+        aria-label="Add expense"
+      >
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <section class="overview-section">
+    <ion-card class="summary-card">
+      <ion-card-content>
+        <p class="summary-label">{{ expenseSummaryLabel }}</p>
+        <h2>{{ formatAmount(totalAmount()) }}</h2>
+        <p class="summary-caption">Total tracked spend</p>
+      </ion-card-content>
+    </ion-card>
+  </section>
+
+  @if (isLoading()) {
+    <div class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
+      <ion-text>Loading expenses...</ion-text>
+    </div>
+  }
+
+  @if (!isLoading() && expenses().length === 0) {
+    <ion-card class="empty-state-card">
+      <ion-card-header>
+        <ion-card-title>No expenses yet</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        Create your first expense to see it listed here.
+        <div class="empty-state-action">
+          <ion-button routerLink="/expenses/new">Create expense</ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  }
+
+  @if (expenses().length > 0) {
+    <ion-list lines="none" class="expense-list">
+      @for (expense of expenses(); track trackByExpenseId($index, expense)) {
+        <ion-item (click)="editExpense(expense.id)" button detail="true" class="expense-item">
+          <ion-label>
+            <h2>{{ expense.title }}</h2>
+            <p class="meta-row">
+              <ion-icon name="pricetag-outline"></ion-icon>
+              {{ expense.category }}
+            </p>
+            <p class="meta-row">
+              <ion-icon name="calendar-outline"></ion-icon>
+              {{ formatDate(expense.expenseDate) }}
+            </p>
+            <p class="amount-row">
+              <ion-icon name="cash-outline"></ion-icon>
+              {{ formatAmount(expense.amount) }}
+            </p>
+            @if (expense.notes) {
+              <p class="notes-preview">{{ expense.notes }}</p>
+            }
+          </ion-label>
+
+          <ion-button
+            slot="end"
+            type="button"
+            fill="clear"
+            color="danger"
+            aria-label="Delete expense"
+            (click)="openDeleteConfirmation(expense, $event)"
+          >
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      }
+    </ion-list>
+  }
+</ion-content>
+
+<ion-alert
+  [isOpen]="selectedExpenseForDeletion() !== null"
+  header="Delete expense"
+  [message]="'Are you sure you want to delete ' + (selectedExpenseForDeletion()?.title ?? 'this expense') + '?'"
+  [buttons]="[
+    { text: 'Cancel', role: 'cancel', handler: closeDeleteConfirmation.bind(this) },
+    { text: 'Delete', role: 'destructive', handler: confirmDelete.bind(this) }
+  ]"
+  (didDismiss)="closeDeleteConfirmation()"
+></ion-alert>
+
+<ion-toast
+  [isOpen]="isToastOpen()"
+  [message]="toastMessage()"
+  color="secondary"
+  duration="2000"
+  (didDismiss)="closeToast()"
+></ion-toast>

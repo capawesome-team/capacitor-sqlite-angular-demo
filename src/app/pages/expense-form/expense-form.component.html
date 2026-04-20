@@ -1,0 +1,143 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/expenses"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ pageTitle }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (isLoadingExpense()) {
+    <div class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
+      <ion-text>Loading expense...</ion-text>
+    </div>
+  } @else {
+    <form [formGroup]="expenseForm" (ngSubmit)="submitForm()">
+      <section class="form-intro">
+        <h2>{{ isEditMode ? 'Update expense details' : 'Track a new expense' }}</h2>
+        <p>Keep your records complete so your totals stay accurate.</p>
+      </section>
+
+      <ion-item class="form-item" lines="none">
+        <ion-input
+          label="Title"
+          labelPlacement="stacked"
+          placeholder="Lunch with client"
+          formControlName="title"
+        ></ion-input>
+      </ion-item>
+      @if (isFieldInvalid('title')) {
+        <ion-text color="danger" class="field-error">Title is required.</ion-text>
+      }
+
+      <ion-item class="form-item" lines="none">
+        <ion-select
+          label="Category"
+          labelPlacement="stacked"
+          placeholder="Select a category"
+          interface="popover"
+          formControlName="category"
+        >
+          @for (category of categoryOptions; track category) {
+            <ion-select-option [value]="category">{{ category }}</ion-select-option>
+          }
+        </ion-select>
+      </ion-item>
+      @if (isFieldInvalid('category')) {
+        <ion-text color="danger" class="field-error">Category is required.</ion-text>
+      }
+
+      <ion-item class="form-item" lines="none">
+        <ion-input
+          label="Amount"
+          labelPlacement="stacked"
+          type="number"
+          inputmode="decimal"
+          min="0.01"
+          step="0.01"
+          placeholder="0.00"
+          formControlName="amount"
+        ></ion-input>
+      </ion-item>
+      @if (isFieldInvalid('amount')) {
+        <ion-text color="danger" class="field-error">Amount must be greater than 0.</ion-text>
+      }
+
+      <ion-item class="form-item" lines="none">
+        <ion-label>Expense date</ion-label>
+        <ion-datetime-button datetime="expense-date-datetime"></ion-datetime-button>
+      </ion-item>
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime
+            id="expense-date-datetime"
+            [value]="expenseForm.controls.expenseDate.value || undefined"
+            presentation="date"
+            showDefaultButtons="true"
+            (ionChange)="onExpenseDateChange($event)"
+          ></ion-datetime>
+        </ng-template>
+      </ion-modal>
+      @if (isFieldInvalid('expenseDate')) {
+        <ion-text color="danger" class="field-error">Expense date is required.</ion-text>
+      }
+
+      <ion-item class="form-item" lines="none">
+        <ion-textarea
+          label="Notes (optional)"
+          labelPlacement="stacked"
+          autoGrow="true"
+          formControlName="notes"
+          placeholder="Any extra detail..."
+        ></ion-textarea>
+      </ion-item>
+
+      @if (errorMessage()) {
+        <ion-text color="danger" class="form-error">{{ errorMessage() }}</ion-text>
+      }
+
+      <div class="form-actions">
+        @if (isEditMode) {
+          <ion-button
+            type="button"
+            fill="clear"
+            color="danger"
+            class="delete-button"
+            (click)="openDeleteConfirmation()"
+          >
+            Delete
+          </ion-button>
+        }
+        <div class="form-actions-right">
+          <ion-button type="button" fill="outline" class="secondary-action" (click)="cancel()">
+            Cancel
+          </ion-button>
+          <ion-button type="submit" class="primary-action" [disabled]="isSaving()">
+            {{ submitLabel }}
+          </ion-button>
+        </div>
+      </div>
+    </form>
+  }
+</ion-content>
+
+<ion-alert
+  [isOpen]="isDeleteAlertOpen()"
+  header="Delete expense"
+  message="This expense will be permanently removed."
+  [buttons]="[
+    { text: 'Cancel', role: 'cancel', handler: closeDeleteConfirmation.bind(this) },
+    { text: 'Delete', role: 'destructive', handler: confirmDelete.bind(this) }
+  ]"
+  (didDismiss)="closeDeleteConfirmation()"
+></ion-alert>
+
+<ion-toast
+  [isOpen]="isToastOpen()"
+  [message]="toastMessage()"
+  color="secondary"
+  duration="2000"
+  (didDismiss)="closeToast()"
+></ion-toast>
