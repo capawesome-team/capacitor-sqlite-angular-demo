@@ -14,12 +14,15 @@ A simple CRUD expenses app built with Angular, Ionic, Capacitor, and SQLite. Sou
 - Database connection lifecycle management
 - Web support via `@sqlite.org/sqlite-wasm`
 
+[Check the demo](https://www.youtube.com/shorts/fL4NMJTvMlw)
+
 ## Built with
 
 - Angular 21
 - Ionic 8
 - Capacitor 8
 - [`@capawesome-team/capacitor-sqlite`](https://capawesome.io/plugins/sqlite/)
+
 
 ## Getting started
 
