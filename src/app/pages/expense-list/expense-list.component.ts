@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import {
   IonAlert,
@@ -19,7 +19,7 @@ import {
   IonTitle,
   IonToast,
   IonToolbar,
-} from '@ionic/angular/standalone';
+} from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import {
   add,
@@ -56,6 +56,7 @@ import { ExpensesService } from '../../services/expenses';
     IonToast,
     IonToolbar,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class ExpenseListComponent implements OnInit {

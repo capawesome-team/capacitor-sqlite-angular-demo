@@ -1,11 +1,12 @@
-import { Component, HostListener, OnDestroy, inject } from '@angular/core';
-import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { Component, HostListener, OnDestroy, inject, ChangeDetectionStrategy } from '@angular/core';
+import { IonApp, IonRouterOutlet } from '@ionic/angular';
 import { DatabaseService } from './services/database';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   imports: [IonApp, IonRouterOutlet],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class AppComponent implements OnDestroy {

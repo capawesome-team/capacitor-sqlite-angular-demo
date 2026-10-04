@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -22,7 +22,7 @@ import {
   IonTitle,
   IonToast,
   IonToolbar,
-} from '@ionic/angular/standalone';
+} from '@ionic/angular';
 import {
   CreateExpenseInput,
   UpdateExpenseInput,
@@ -56,6 +56,7 @@ import { ExpensesService } from '../../services/expenses';
     IonToast,
     IonToolbar,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class ExpenseFormComponent implements OnInit {
