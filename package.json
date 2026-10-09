@@ -27,7 +27,7 @@
     "@capacitor/ios": "8.5.2",
     "@capacitor/keyboard": "8.0.6",
     "@capacitor/status-bar": "8.0.4",
-    "@capawesome-team/capacitor-sqlite": "^0.4.1",
+    "@capawesome-team/capacitor-sqlite": "^0.5.0",
     "@ionic/angular": "^9.0.6",
     "@sqlite.org/sqlite-wasm": "^3.51.2-build9",
     "ionicons": "^8.0.13",
